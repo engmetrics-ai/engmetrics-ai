@@ -120,8 +120,8 @@ pip install -e ".[dev]"                  # add ",pandas" for optional aggregatio
 ## Quick start
 
 ```bash
-# 1) Try it with no setup at all:
-python -m ai_engineering_metrics analyze --epic DEMO-1 --mock --output ./generated/demo.html
+# 1) Try it with zero setup (no epic, no credentials needed):
+ai-engineering-metrics analyze --mock
 
 # 2) Configure real access:
 cp .env.example .env        # fill in Jira values
@@ -129,24 +129,47 @@ gh auth login               # authenticate GitHub
 
 # 3) Analyze a real epic (GitHub repo auto-detected from the current git remote):
 cd /path/to/your/repo
-ai-engineering-metrics analyze --epic PROJ-123
+ai-engineering-metrics analyze --epic PROJ-123 --open
+```
+
+Each run writes a self-contained bundle named after the epic:
+
+```text
+reports/
+└── DEMO-1/
+    ├── dashboard.html      # the interactive dashboard (open this)
+    ├── metrics.json        # full machine-readable report
+    ├── stories.csv         # one row per story
+    └── pull_requests.csv   # one row per PR
 ```
 
 ## Example commands
 
 ```bash
-# HTML dashboard to a specific path
-python -m ai_engineering_metrics analyze --epic PROJ-123 --output ./reports/PROJ-123.html
+# Zero-setup demo (epic defaults to DEMO-1)
+ai-engineering-metrics analyze --mock
 
-# JSON to stdout (pipeable)
-python -m ai_engineering_metrics analyze --epic PROJ-123 --format json
+# Real epic -> reports/PROJ-123/ ; --open launches the dashboard
+ai-engineering-metrics analyze -e PROJ-123 --open
+
+# Choose where the bundle goes
+ai-engineering-metrics analyze -e PROJ-123 -o ./out
+
+# Only one artifact (all | html | json | csv)
+ai-engineering-metrics analyze -e PROJ-123 --format csv
+
+# Pipe the metrics JSON to another tool
+ai-engineering-metrics analyze -e PROJ-123 --stdout | jq .ai_usage
 
 # Point at a specific GitHub repo (overrides .env and auto-detection)
-ai-engineering-metrics analyze --epic PROJ-123 --repo your-org/your-repo
+ai-engineering-metrics analyze -e PROJ-123 --repo your-org/your-repo
 
-# Verbose logging
-ai-engineering-metrics analyze --epic PROJ-123 --verbose
+# Backward-compatible single-file output
+ai-engineering-metrics analyze -e PROJ-123 -o ./reports/PROJ-123.html
 ```
+
+> `python -m ai_engineering_metrics analyze ...` works identically to the
+> `ai-engineering-metrics` console script.
 
 If `--output` is omitted, the report is written to `./reports/<EPIC>.<ext>`
 (except `--format json` with no output, which prints to stdout).
@@ -208,10 +231,13 @@ git-ignored — never commit it.**
 
 ## Generated outputs
 
+Each run creates a per-epic bundle (`<output>/<EPIC>/`) containing
+`dashboard.html`, `metrics.json`, `stories.csv` and `pull_requests.csv`.
+
 | Directory | Committed? | Contents |
 |---|---|---|
 | `examples/` | ✅ yes | Sanitized demo dashboard (mock data only). |
-| `reports/`  | ❌ git-ignored | Reports from **real** data — may contain private info. |
+| `reports/`  | ❌ git-ignored | Bundles from **real** data — may contain private info. |
 | `generated/`| ❌ git-ignored | Scratch / throwaway output. |
 
 Reports built from real data can contain Jira URLs, issue keys, author names and

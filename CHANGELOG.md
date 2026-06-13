@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **CLI first-run experience.** `analyze --mock` now works with no `--epic`
+  (defaults to `DEMO-1`). Each run writes a tidy per-epic bundle
+  `reports/<EPIC>/` with `dashboard.html`, `metrics.json`, `stories.csv` and
+  `pull_requests.csv`. Added `--open` (launch the dashboard), `--stdout` (pipe
+  metrics JSON) and a clear success summary. Friendlier help, validation and
+  error messages; ASCII-safe / UTF-8 terminal output. A `--output` path ending
+  in `.html`/`.json` still writes a single file (backward compatible).
+
 ## [0.1.0] - 2026-06-13
 
 First public release.
