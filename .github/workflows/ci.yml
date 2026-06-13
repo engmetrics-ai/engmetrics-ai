@@ -75,23 +75,58 @@ jobs:
       - name: Check package metadata (simulates PyPI upload validation)
         run: twine check --strict dist/*
 
-      - name: E2E — install from wheel and run CLI
+      - name: E2E (mock) — install from wheel and run CLI
         run: |
           pip install dist/*.whl
           ai-engineering-metrics --version
-          ai-engineering-metrics analyze --mock --output /tmp/e2e-reports
-          test -f /tmp/e2e-reports/DEMO-1/dashboard.html
-          test -f /tmp/e2e-reports/DEMO-1/metrics.json
-          test -f /tmp/e2e-reports/DEMO-1/stories.csv
-          test -f /tmp/e2e-reports/DEMO-1/pull_requests.csv
-          echo "E2E passed — all artifacts present"
+          ai-engineering-metrics analyze --mock --output /tmp/e2e-mock
+          test -f /tmp/e2e-mock/DEMO-1/dashboard.html
+          test -f /tmp/e2e-mock/DEMO-1/metrics.json
+          test -f /tmp/e2e-mock/DEMO-1/stories.csv
+          test -f /tmp/e2e-mock/DEMO-1/pull_requests.csv
+          echo "E2E (mock) passed — all artifacts present"
 
-      - name: Upload demo dashboard artifact
+      - name: Upload mock dashboard artifact
         uses: actions/upload-artifact@v4
         with:
           name: demo-dashboard
-          path: /tmp/e2e-reports/DEMO-1/dashboard.html
+          path: /tmp/e2e-mock/DEMO-1/dashboard.html
           if-no-files-found: error
+
+      - name: E2E (real JIRA) — run CLI with live credentials
+        if: env.JIRA_API_TOKEN != ''
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_TEST_EPIC: ${{ secrets.JIRA_TEST_EPIC }}
+        run: |
+          ai-engineering-metrics analyze \
+            --epic "$JIRA_TEST_EPIC" \
+            --output /tmp/e2e-real
+          epic_dir="/tmp/e2e-real/$JIRA_TEST_EPIC"
+          test -f "$epic_dir/dashboard.html"
+          test -f "$epic_dir/metrics.json"
+          python - <<'PY'
+          import json, sys, pathlib, os
+          p = pathlib.Path(f"/tmp/e2e-real/{os.environ['JIRA_TEST_EPIC']}/metrics.json")
+          data = json.loads(p.read_text())
+          assert "epic" in data, "metrics.json missing 'epic' key"
+          assert "productivity" in data, "metrics.json missing 'productivity' key"
+          print(f"Real JIRA E2E passed: {data['epic']['key']} — "
+                f"{data['productivity']['hours_saved']}h saved")
+          PY
+
+      - name: Upload real dashboard artifact
+        if: env.JIRA_API_TOKEN != ''
+        env:
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_TEST_EPIC: ${{ secrets.JIRA_TEST_EPIC }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: real-dashboard
+          path: /tmp/e2e-real/${{ secrets.JIRA_TEST_EPIC }}/dashboard.html
+          if-no-files-found: warn
 
   docker:
     name: Docker build + test
