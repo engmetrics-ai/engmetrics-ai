@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import os
 from functools import lru_cache
+from pathlib import Path
 
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
@@ -104,7 +105,9 @@ class Settings(BaseModel):
     @classmethod
     def from_env(cls, *, load_dotenv_file: bool = True) -> Settings:
         if load_dotenv_file:
-            load_dotenv()
+            # Explicitly load from cwd so the CLI works when installed via pipx
+            # and run from a project directory (e.g. `cd my-repo && ai-engineering-metrics analyze`).
+            load_dotenv(dotenv_path=Path.cwd() / ".env")
 
         jira = JiraConfig(
             base_url=os.getenv("JIRA_BASE_URL", "").rstrip("/"),
