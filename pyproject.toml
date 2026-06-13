@@ -34,10 +34,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/dennisrojaspereira/ai-engineering-metrics"
-Repository = "https://github.com/dennisrojaspereira/ai-engineering-metrics"
-Issues = "https://github.com/dennisrojaspereira/ai-engineering-metrics/issues"
-Changelog = "https://github.com/dennisrojaspereira/ai-engineering-metrics/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/dennisrojaspereira/engmetrics-ai"
+Repository = "https://github.com/dennisrojaspereira/engmetrics-ai"
+Issues = "https://github.com/dennisrojaspereira/engmetrics-ai/issues"
+Changelog = "https://github.com/dennisrojaspereira/engmetrics-ai/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 pandas = ["pandas>=2.2"]

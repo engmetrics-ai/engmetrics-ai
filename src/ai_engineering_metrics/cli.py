@@ -52,7 +52,7 @@ app = typer.Typer(
         "[bold]Try it in 30 seconds (no setup):[/bold]\n"
         "  ai-engineering-metrics analyze --mock"
     ),
-    epilog="Docs: https://github.com/dennisrojaspereira/ai-engineering-metrics",
+    epilog="Docs: https://github.com/dennisrojaspereira/engmetrics-ai",
 )
 
 
