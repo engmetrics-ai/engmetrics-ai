@@ -1,10 +1,13 @@
-# engmetrics.ai — Engineering Intelligence Platform
+# EngMetrics AI — Engineering Intelligence Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-orange.svg)](#status)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-**An Engineering Intelligence Platform for Tech Leads and Engineering Managers — unifying Jira, GitHub and AI usage data into actionable delivery insights.**
+**EngMetrics AI is an open source engineering intelligence platform to help teams understand delivery performance, developer experience, software quality, and AI adoption impact.**
+
+> Unifying Jira, GitHub, and AI usage data into actionable delivery insights for Tech Leads and Engineering Managers.
 
 > ⚠️ **Status: experimental.** This is an early open-source experiment, not a
 > production-ready product. Metrics are heuristic, integrations are still
@@ -355,23 +358,25 @@ needed.
 
 ## Roadmap
 
-See [`docs/product-vision.md`](docs/product-vision.md) for the full evolution
-path. Near-term priorities:
+See [ROADMAP.md](ROADMAP.md) for the full roadmap (Now / Next / Future). Near-term priorities:
 
+- [ ] Publish to PyPI (`pipx install ai-engineering-metrics`).
+- [ ] Docker Compose quick-start for zero-config local run.
 - [ ] Multi-epic / portfolio rollups and trends over time.
-- [ ] Real static-analysis quality source (SonarQube/CodeClimate).
-- [ ] Pluggable AI-cost providers and per-model token pricing.
-- [ ] First-class review metrics via richer GitHub data (no simulation needed).
-- [ ] Publish to PyPI; optional web UI.
+- [ ] Real static-analysis quality source (SonarQube / CodeClimate).
 - [ ] Agent-ready JSON API for LLM narrative reports (copilot foundation).
 
-Ideas and use cases are very welcome — open an issue.
+Ideas and use cases are very welcome — open an issue or see [`docs/product-vision.md`](docs/product-vision.md) for the full platform vision.
 
 ## Contributing
 
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for dev setup,
 project layout and workflow. Run the tests with `pytest` and lint with
 `ruff check .`.
+
+- New to open source? Look for [`good first issue`](https://github.com/engmetrics-ai/engmetrics-ai/labels/good%20first%20issue) tickets.
+- For architectural changes, open an RFC issue first (see [GOVERNANCE.md](GOVERNANCE.md)).
+- Community norms and response times: [docs/community.md](docs/community.md).
 
 ## Security
 
@@ -390,6 +395,6 @@ numbers as directional signals to inform a conversation, not as ground truth.
 
 [MIT](LICENSE) © Dennis Rojas Pereira
 
-See also: [CONTRIBUTING.md](CONTRIBUTING.md) · [SECURITY.md](SECURITY.md) ·
-[CHANGELOG.md](CHANGELOG.md) · [Product Vision](docs/product-vision.md) ·
-[ADR-001](docs/adr/ADR-001-platform-repositioning.md)
+See also: [CONTRIBUTING.md](CONTRIBUTING.md) · [GOVERNANCE.md](GOVERNANCE.md) · [ROADMAP.md](ROADMAP.md) · [SECURITY.md](SECURITY.md) ·
+[CHANGELOG.md](CHANGELOG.md) · [Architecture](docs/architecture.md) · [Metrics Reference](docs/metrics.md) · [Community](docs/community.md) ·
+[Product Vision](docs/product-vision.md) · [ADR-001](docs/adr/ADR-001-platform-repositioning.md)
