@@ -79,6 +79,21 @@ jobs:
         run: |
           pip install dist/*.whl
           ai-engineering-metrics --version
+
+          # configure command must be present and show help without error
+          ai-engineering-metrics configure --help
+
+          # analyze without credentials in a non-TTY env must exit 1 with a clear message
+          set +e
+          output=$(ai-engineering-metrics analyze --epic PROJ-1 2>&1)
+          code=$?
+          set -e
+          [ $code -eq 1 ] || { echo "Expected exit 1 for unconfigured analyze, got $code"; exit 1; }
+          echo "$output" | grep -qi "configure\|JIRA_BASE_URL" \
+            || { echo "Expected helpful error message, got: $output"; exit 1; }
+          echo "E2E: unconfigured analyze exits 1 in non-TTY — OK"
+
+          # mock mode must still work with no credentials
           ai-engineering-metrics analyze --mock --output /tmp/e2e-mock
           test -f /tmp/e2e-mock/DEMO-1/dashboard.html
           test -f /tmp/e2e-mock/DEMO-1/metrics.json

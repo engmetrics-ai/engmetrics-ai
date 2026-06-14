@@ -15,6 +15,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
+from ai_engineering_metrics.setup_wizard import load_user_config
+
 
 def _as_bool(value: str | None, default: bool = False) -> bool:
     if value is None:
@@ -104,6 +106,8 @@ class Settings(BaseModel):
 
     @classmethod
     def from_env(cls, *, load_dotenv_file: bool = True) -> Settings:
+        # User-scoped YAML is lowest priority: env vars and .env both override it.
+        load_user_config()
         if load_dotenv_file:
             # Explicitly load from cwd so the CLI works when installed via pipx
             # and run from any project directory.

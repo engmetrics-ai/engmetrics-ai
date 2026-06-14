@@ -11,8 +11,9 @@
 > evolving, and APIs may change. Use it to *start a conversation* about delivery
 > health — not as a system of record. See [Status](#status).
 
-> 📊 **Live example:** open [`examples/demo-dashboard.html`](examples/demo-dashboard.html)
-> in your browser — a full dashboard generated in mock mode (100% synthetic data).
+> 📊 **Live examples:**
+> - **Online:** [engmetrics.ai/demo.html](https://engmetrics.ai/demo.html) — fully interactive dashboard, no login required.
+> - **Local:** open [`examples/demo-dashboard.html`](examples/demo-dashboard.html) in your browser — generated in mock mode (100% synthetic data).
 
 > 📄 **Product Vision:** see [`docs/product-vision.md`](docs/product-vision.md) for the
 > full platform vision, target audience and roadmap.
@@ -176,9 +177,9 @@ pip install -e ".[dev]"                  # add ",pandas" for optional aggregatio
 # 1) Try it with zero setup (no epic, no credentials needed):
 ai-engineering-metrics analyze --mock
 
-# 2) Configure real access:
-cp .env.example .env        # fill in Jira values
-gh auth login               # authenticate GitHub
+# 2) Configure real access (one-time, stored globally — no .env files needed):
+ai-engineering-metrics configure   # interactive wizard: Jira URL, email, token
+gh auth login                      # authenticate GitHub
 
 # 3) Analyze a real epic (GitHub repo auto-detected from the current git remote):
 cd /path/to/your/repo
@@ -199,6 +200,9 @@ reports/
 ## Example commands
 
 ```bash
+# One-time setup (saved globally, shared across all repos)
+ai-engineering-metrics configure
+
 # Zero-setup demo (epic defaults to DEMO-1)
 ai-engineering-metrics analyze --mock
 
@@ -235,6 +239,14 @@ The tool reads a Jira Cloud epic, its linked stories and selected custom fields.
 You need a Jira API token (create one at
 <https://id.atlassian.com/manage-profile/security/api-tokens>).
 
+Run `ai-engineering-metrics configure` for a guided setup wizard — it saves
+credentials to a user-scoped config file shared across all repositories:
+
+```
+Linux/macOS: ~/.config/ai-engineering-metrics/config.yaml
+Windows:     %APPDATA%/ai-engineering-metrics/config.yaml
+```
+
 | Variable | Meaning |
 |---|---|
 | `JIRA_BASE_URL` | e.g. `https://your-company.atlassian.net` |
@@ -265,8 +277,12 @@ PRs are matched to issues by the Jira key appearing in the PR title or branch
 
 ## Environment variables
 
-Copy [`.env.example`](.env.example) to `.env` and fill it in. **`.env` is
+The preferred setup is `ai-engineering-metrics configure` (one-time wizard,
+stored globally). For project-specific overrides or CI, copy
+[`.env.example`](.env.example) to `.env` and fill it in. **`.env` is
 git-ignored — never commit it.**
+
+Priority order (highest wins): environment variables → `.env` → user config YAML → defaults.
 
 | Variable | Default | Purpose |
 |---|---|---|

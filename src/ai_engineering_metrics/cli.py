@@ -28,6 +28,7 @@ from ai_engineering_metrics.output import (
 )
 from ai_engineering_metrics.reports.html_report import write_html
 from ai_engineering_metrics.service import AnalysisService
+from ai_engineering_metrics.setup_wizard import run_wizard
 from ai_engineering_metrics.storage.json_storage import report_to_json, save_report
 
 # Make output robust on consoles with a non-UTF-8 default encoding (e.g. the
@@ -197,6 +198,9 @@ def analyze(
     _validate_epic(epic)
 
     settings = Settings.from_env()
+    if not mock and not settings.jira.is_configured:
+        run_wizard()
+        settings = Settings.from_env(load_dotenv_file=False)
     if repo:
         if "/" not in repo:
             typer.secho("--repo must be in 'owner/name' format.", fg=typer.colors.RED, err=True)
@@ -214,7 +218,8 @@ def analyze(
     except IntegrationError as exc:
         typer.secho(f"Error: {exc}", fg=typer.colors.RED, err=True)
         typer.secho(
-            "  Tip: copy .env.example to .env and fill it in, or run the demo with --mock.",
+            "  Tip: run 'ai-engineering-metrics configure' to set up credentials, "
+            "or use --mock for a demo.",
             err=True,
         )
         raise typer.Exit(code=1) from exc
@@ -245,6 +250,21 @@ def analyze(
     dashboard = _print_summary(report, written, mock=mock)
     if open_browser and dashboard is not None:
         webbrowser.open(dashboard.resolve().as_uri())
+
+
+@app.command()
+def configure() -> None:
+    """Set up or update JIRA credentials with an interactive wizard.
+
+    [bold]Examples[/bold]
+
+      [green]ai-engineering-metrics configure[/green]   first-time setup or update credentials
+
+    Saves to [cyan]~/.config/ai-engineering-metrics/config.yaml[/cyan] (Linux/macOS)
+    or [cyan]%APPDATA%/ai-engineering-metrics/config.yaml[/cyan] (Windows).
+    Configuration is shared across all repositories and projects.
+    """
+    run_wizard()
 
 
 if __name__ == "__main__":
