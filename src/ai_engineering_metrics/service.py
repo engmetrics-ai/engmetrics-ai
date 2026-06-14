@@ -21,6 +21,7 @@ from ai_engineering_metrics.integrations.base import (
     PullRequestSource,
     QualitySource,
 )
+from ai_engineering_metrics.integrations.deployment_client import JsonDeploymentClient
 from ai_engineering_metrics.integrations.github_client import GitHubClient, detect_current_repo
 from ai_engineering_metrics.integrations.jira_client import JiraClient
 from ai_engineering_metrics.integrations.quality_client import (
@@ -96,7 +97,13 @@ class AnalysisService:
         else:
             logger.info("No GitHub repo configured/detected; using JIRA development panel.")
             pr_source = jira
-        return cls(settings, jira, pr_source, quality)
+
+        deployment_source = None
+        if settings.deployments_file:
+            deployment_source = JsonDeploymentClient(settings.deployments_file)
+            logger.info("Using JSON deployment source: %s", settings.deployments_file)
+
+        return cls(settings, jira, pr_source, quality, deployment_source)
 
     # ---------------------------------------------------------------- analyse
     def analyze(self, epic_key: str) -> EpicReport:

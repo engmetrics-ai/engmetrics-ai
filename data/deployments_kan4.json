@@ -1,0 +1,40 @@
+[
+  {
+    "id": "deploy-kan4-001",
+    "environment": "production",
+    "deployed_at": "2026-05-16T14:30:00Z",
+    "pr_numbers": [4, 7],
+    "triggered_by": "github-actions",
+    "lead_time_hours": 96.5,
+    "status": "success"
+  },
+  {
+    "id": "deploy-kan4-002",
+    "environment": "production",
+    "deployed_at": "2026-05-20T10:00:00Z",
+    "pr_numbers": [8],
+    "triggered_by": "github-actions",
+    "lead_time_hours": 72.0,
+    "status": "failed",
+    "incident_detected_at": "2026-05-20T10:45:00Z",
+    "incident_resolved_at": "2026-05-20T14:15:00Z"
+  },
+  {
+    "id": "deploy-kan4-003",
+    "environment": "production",
+    "deployed_at": "2026-05-27T16:00:00Z",
+    "pr_numbers": [10],
+    "triggered_by": "github-actions",
+    "lead_time_hours": 48.0,
+    "status": "success"
+  },
+  {
+    "id": "deploy-kan4-004",
+    "environment": "production",
+    "deployed_at": "2026-06-03T11:00:00Z",
+    "pr_numbers": [11, 12],
+    "triggered_by": "github-actions",
+    "lead_time_hours": 36.0,
+    "status": "success"
+  }
+]

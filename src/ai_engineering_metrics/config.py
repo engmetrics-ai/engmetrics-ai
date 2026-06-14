@@ -99,6 +99,7 @@ class Settings(BaseModel):
 
     mock_mode: bool = False
     quality_metrics_file: str | None = None
+    deployments_file: str | None = None
     jira: JiraConfig = Field(default_factory=JiraConfig)
     github: GitHubConfig = Field(default_factory=GitHubConfig)
     pricing: PricingConfig = Field(default_factory=PricingConfig)
@@ -148,6 +149,7 @@ class Settings(BaseModel):
         return cls(
             mock_mode=_as_bool(os.getenv("MOCK_MODE"), default=False),
             quality_metrics_file=os.getenv("QUALITY_METRICS_FILE") or None,
+            deployments_file=os.getenv("DEPLOYMENTS_FILE") or None,
             jira=jira,
             github=github,
             pricing=pricing,
