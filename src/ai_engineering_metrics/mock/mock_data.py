@@ -9,7 +9,13 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
 
-from ai_engineering_metrics.domain.models import Deployment, Epic, PullRequest, QualityMetrics, Story
+from ai_engineering_metrics.domain.models import (
+    Deployment,
+    Epic,
+    PullRequest,
+    QualityMetrics,
+    Story,
+)
 
 _BASE = datetime(2026, 5, 1, 9, 0, tzinfo=UTC)
 
