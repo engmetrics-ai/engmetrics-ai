@@ -451,9 +451,9 @@
       <div class="step">
         <div class="step-icon">🔑</div>
         <div class="step-num">Step 2</div>
-        <h3>Add a .env file</h3>
-        <p>Drop a <code style="font-family:monospace;font-size:12px;background:var(--teal-lt);color:var(--teal-dk);padding:1px 5px;border-radius:4px;">.env</code> in your project root with your JIRA credentials. GitHub uses the <code style="font-family:monospace;font-size:12px;background:var(--teal-lt);color:var(--teal-dk);padding:1px 5px;border-radius:4px;">gh</code> CLI you already have.</p>
-        <div class="step-code">JIRA_BASE_URL=https://co.atlassian.net<br>JIRA_EMAIL=you@company.com<br>JIRA_API_TOKEN=your-token</div>
+        <h3>Configure once</h3>
+        <p>Run the interactive wizard once — credentials are saved globally, shared across all repos. GitHub uses the <code style="font-family:monospace;font-size:12px;background:var(--teal-lt);color:var(--teal-dk);padding:1px 5px;border-radius:4px;">gh</code> CLI you already have.</p>
+        <div class="step-code">ai-engineering-metrics configure</div>
       </div>
       <div class="step">
         <div class="step-icon">🚀</div>
@@ -672,8 +672,9 @@ KAN-4,#1,open,1,1,0</pre></div>
           <div class="ps">
             <div class="ps-n">4</div>
             <div class="ps-b">
-              <h4>Add to your .env file</h4>
-              <div class="snip">JIRA_BASE_URL=https://yourco.atlassian.net<br>JIRA_EMAIL=you@company.com<br>JIRA_API_TOKEN=ATATT3x...</div>
+              <h4>Run the configure wizard</h4>
+              <p>The wizard saves credentials globally — no <code style="font-family:monospace;font-size:12px;background:var(--teal-lt);color:var(--teal-dk);padding:1px 5px;border-radius:4px;">.env</code> file needed.</p>
+              <div class="snip">ai-engineering-metrics configure<br><span class="c"># JIRA Base URL: https://yourco.atlassian.net</span><br><span class="c"># JIRA Email: you@company.com</span><br><span class="c"># JIRA API Token: ************</span></div>
             </div>
           </div>
         </div>
